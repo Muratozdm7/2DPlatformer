@@ -11,12 +11,15 @@ public class Player : MonoBehaviour
 
     private Animator anim;
     private Vector3 rotation;
+
+    private CoinManager m;
     
     void Start()
     {
         rb2 = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         rotation = transform.eulerAngles;
+        m = GameObject.FindGameObjectWithTag("Text").GetComponent<CoinManager>();
     }
 
     
@@ -66,6 +69,16 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            m.AddMoney();
+            Destroy(other.gameObject);
         }
     }
 }
