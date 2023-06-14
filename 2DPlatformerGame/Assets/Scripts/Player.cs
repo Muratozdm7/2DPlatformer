@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Player : MonoBehaviour
     private Vector3 rotation;
 
     private CoinManager m;
+
+    public GameObject gameOverPanel;
+    [SerializeField] private GameObject cam;
     
     void Start()
     {
@@ -61,6 +65,7 @@ public class Player : MonoBehaviour
             rb2.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             isGrounded = false;
         }
+        cam.transform.position = new Vector3(transform.position.x, 0, -10);
     }
 
 
@@ -69,6 +74,11 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+            gameOverPanel.SetActive(true);
         }
     }
 
@@ -79,6 +89,15 @@ public class Player : MonoBehaviour
         {
             m.AddMoney();
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("Spike"))
+        {
+            gameOverPanel.SetActive(true);
+            Destroy(gameObject);
+        }
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

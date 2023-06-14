@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Coin
   - Text
+  - Spike
+  - Enemy
   layers:
   - Default
   - TransparentFX
